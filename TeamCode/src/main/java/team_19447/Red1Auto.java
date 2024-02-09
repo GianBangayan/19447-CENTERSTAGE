@@ -97,27 +97,34 @@ public class Red1Auto extends LinearOpMode {
 
 
         //-------------Auto code goes here --------------------------------
-        //move it forward 70cm
-        Drive(70, 70, 70, 70);
+        //move it forward 70cm and push game obej
+        Drive(78, 78, 78, 78);
         stopRobot();
 
+        //back 2 cm
+        Drive(-5, -5, -5, -5);
+        stopRobot();
         //detect where pixel is
 
 
         //////////////-----------chain if statements
         //drop the pixel
-
-
+        Intake.setPower(0.5);
+        sleep(900);
+        Intake.setPower(0);
+        //move away from dropped pixel
+        Drive(-10, -10, -10, -10);
+        stopRobot();
 
         //turn left here to face sliders towards board
         Drive(-62, -62, 62, 62);
         stopRobot();
 
         //raise sliders
-        Sliders.setTargetPosition(5000);
+        Sliders.setTargetPosition(3000);
         Sliders.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Sliders.setPower(0.5);
-        while(Sliders.getCurrentPosition()<4999){
+        while(Sliders.getCurrentPosition()<2999){
 
         }
         Sliders.setPower(0);
@@ -128,14 +135,16 @@ public class Red1Auto extends LinearOpMode {
         Drive(-90, -90, -90, -90);
         stopRobot();
 
-
+        //align with board
+       Drive(13, -13,-13, 13);
+       stopRobot();
         //////////////-----------end if statement
 
         //drop the pixel
-        Wrist.setPosition(0.55);
+        Wrist.setPosition(0.50);
 
-        //kudge the robot forward a bit to ensure the pixel drops
-        Drive(-10, -10, -10, -10);
+        //nudge the robot forward a bit to ensure the pixel drops
+        Drive(-14, -14, -14, -14);
         stopRobot();
 
         sleep(1000);
@@ -146,21 +155,20 @@ public class Red1Auto extends LinearOpMode {
         //reset wrist
         Wrist.setPosition(0.79);
 
+        //move to parking
+        Drive(-75, 75, 75, -75);
+        stopRobot();
+        //forward into parking
+        Drive(-40, -40, -40, -40);
+        stopRobot();
         //pull down the sliders
-        Sliders.setTargetPosition(-4990);
+        Sliders.setTargetPosition(-3000);
         Sliders.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Sliders.setPower(0.4);
         while(Sliders.getCurrentPosition()>1){
 
         }
         Sliders.setPower(0);
-
-        //move to parking
-        Drive(65, -65, -65, 65);
-        stopRobot();
-
-        Drive(-20, -20, -20, -20);
-        stopRobot();
         //robot.Forward(40);
         //robot.StrafeLeft(35);
 

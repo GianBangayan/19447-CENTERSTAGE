@@ -1,5 +1,8 @@
 package team_19447;
 
+
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -7,17 +10,29 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
+
+import java.util.Locale;
+
+BNO055IMU imu;
 
 /*The alliances closest to the back board are '1'
 * The rest of the two are '2'
-*   Blue1Auto - closest to back board
+*   Blue1Auto - closest t   o back board
 *   Blue2Auto - furtherest to back board
 *    Red1Auto -  closest to backboard
 *    Red2 Auto - furthurest to backboard
 * */
 @Autonomous
 public class Red1Auto extends LinearOpMode {
-
+    BNO055IMU imu;
     public static final double forwardTicks = 47.63;
     public static final double strafeTicks = 49.05;
 
@@ -97,78 +112,166 @@ public class Red1Auto extends LinearOpMode {
 
 
         //-------------Auto code goes here --------------------------------
-        //move it forward 70cm and push game obej
-        Drive(78, 78, 78, 78);
-        stopRobot();
+        //If statements
+        if(/*Straight*/true){
+            //move it forward 70cm and push game obej
+            Drive(78, 78, 78, 78);
+            stopRobot();
 
-        //back 2 cm
-        Drive(-5, -5, -5, -5);
-        stopRobot();
-        //detect where pixel is
+            //back 2 cm
+            Drive(-5, -5, -5, -5);
+            stopRobot();
+            //detect where pixel is
 
 
-        //////////////-----------chain if statements
-        //drop the pixel
-        Intake.setPower(0.5);
-        sleep(900);
-        Intake.setPower(0);
-        //move away from dropped pixel
-        Drive(-10, -10, -10, -10);
-        stopRobot();
 
-        //turn left here to face sliders towards board
-        Drive(-62, -62, 62, 62);
-        stopRobot();
+            //////////////-----------chain if statements
+            //drop the pixel
+            Intake.setPower(0.5);
+            sleep(900);
+            Intake.setPower(0);
+            //move away from dropped pixel
+            Drive(-10, -10, -10, -10);
+            stopRobot();
 
-        //raise sliders
-        Sliders.setTargetPosition(3000);
-        Sliders.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Sliders.setPower(0.5);
-        while(Sliders.getCurrentPosition()<2999){
+            //turn left here to face sliders towards board
+            Drive(-62, -62, 62, 62);
+            stopRobot();
+
+            //raise sliders
+            Sliders.setTargetPosition(3000);
+            Sliders.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Sliders.setPower(0.5);
+            while(Sliders.getCurrentPosition()<2999){
+
+            }
+            Sliders.setPower(0);
+
+
+
+            //approach the board
+            Drive(-90, -90, -90, -90);
+            stopRobot();
+
+            //align with board
+            Drive(13, -13,-13, 13);
+            stopRobot();
+            //////////////-----------end if statement
+
+            //drop the pixel
+            Wrist.setPosition(0.50);
+
+            //nudge the robot forward a bit to ensure the pixel drops
+            Drive(-17, -17, -17, -17);
+            stopRobot();
+
+            sleep(1000);
+
+            Drive(10, 10, 10, 10);
+            stopRobot();
+
+            //reset wrist
+            Wrist.setPosition(0.79);
+
+            //move to parking
+            Drive(-75, 75, 75, -75);
+            stopRobot();
+            //forward into parking
+            Drive(-40, -40, -40, -40);
+            stopRobot();
+            //pull down the sliders
+            Sliders.setTargetPosition(-3000);
+            Sliders.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Sliders.setPower(0.4);
+            while(Sliders.getCurrentPosition()>1){
+
+            }
+            Sliders.setPower(0);
+        }
+        else if(/**/false){//Right Side
+            Drive(73, 73, 73, 73);
+            stopRobot();
+
+            //turn right to face game element
+            Drive(62, 62, -62, -62);
+            stopRobot();
+
+            //Push game element
+            Drive(5, 5, 5, 5);
+            stopRobot();
+
+            //back up
+            Drive(-5, -5, -5, -5);
+            stopRobot();
+
+            //drop pixel
+            Intake.setPower(0.5);
+            sleep(900);
+            Intake.setPower(0);
+
+            //move away from dropped pixel
+            Drive(-10, -10, -10, -10);
+            stopRobot();
+
+            //spin 180 to face board
+            Drive(-124, -124, 124, 124);
+            stopRobot();
+
+            //raise sliders
+            Sliders.setTargetPosition(3000);
+            Sliders.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Sliders.setPower(0.5);
+            while(Sliders.getCurrentPosition()<2999){
+
+            }
+            Sliders.setPower(0);
+            //lift wrist
+            Wrist.setPosition(0.50);
+
+            //Strafe right to avoid pixel
+            Drive(-25, 25, 25, -25);
+            stopRobot();
+
+            //move to board 40
+            Drive(-40, -40, -40, -40);
+            stopRobot();
+            //Strafe strafe back left to align with board
+            Drive(10, -10, -10, 10);
+            stopRobot();
+            //Get to board
+            Drive(-50, -50, -50, -50);
+            stopRobot();
+
+            //nudge the robot forward a bit to ensure the pixel drops
+            Drive(-17, -17, -17, -17);
+            stopRobot();
+
+            sleep(1000);
+
+            Drive(10, 10, 10, 10);
+            stopRobot();
+
+            //reset wrist
+            Wrist.setPosition(0.77);
+
+            //move to parking
+            Drive(-55, 55, 55, -55);
+            stopRobot();
+            //forward into parking
+            Drive(-40, -40, -40, -40);
+            stopRobot();
+            //pull down the sliders
+            Sliders.setTargetPosition(-3000);
+            Sliders.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Sliders.setPower(0.4);
+            while(Sliders.getCurrentPosition()>1){
+
+            }
+            Sliders.setPower(0);
+        }
+        else{
 
         }
-        Sliders.setPower(0);
-
-
-
-        //approach the board
-        Drive(-90, -90, -90, -90);
-        stopRobot();
-
-        //align with board
-       Drive(13, -13,-13, 13);
-       stopRobot();
-        //////////////-----------end if statement
-
-        //drop the pixel
-        Wrist.setPosition(0.50);
-
-        //nudge the robot forward a bit to ensure the pixel drops
-        Drive(-14, -14, -14, -14);
-        stopRobot();
-
-        sleep(1000);
-
-        Drive(10, 10, 10, 10);
-        stopRobot();
-
-        //reset wrist
-        Wrist.setPosition(0.79);
-
-        //move to parking
-        Drive(-75, 75, 75, -75);
-        stopRobot();
-        //forward into parking
-        Drive(-40, -40, -40, -40);
-        stopRobot();
-        //pull down the sliders
-        Sliders.setTargetPosition(-3000);
-        Sliders.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Sliders.setPower(0.4);
-        while(Sliders.getCurrentPosition()>1){
-
-        }
-        Sliders.setPower(0);
         //robot.Forward(40);
         //robot.StrafeLeft(35);
 

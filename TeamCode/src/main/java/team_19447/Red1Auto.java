@@ -21,7 +21,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import java.util.Locale;
 
-BNO055IMU imu;
 
 /*The alliances closest to the back board are '1'
 * The rest of the two are '2'

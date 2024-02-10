@@ -2,24 +2,12 @@ package team_19447;
 
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.Func;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
-
-import java.util.Locale;
 
 
 /*The alliances closest to the back board are '1'
@@ -30,7 +18,7 @@ import java.util.Locale;
 *    Red2 Auto - furthurest to backboard
 * */
 @Autonomous
-public class Red1Auto extends LinearOpMode {
+public class Red2Auto extends LinearOpMode {
     BNO055IMU imu;
     public static final double forwardTicks = 47.63;
     public static final double strafeTicks = 49.05;
@@ -112,7 +100,7 @@ public class Red1Auto extends LinearOpMode {
 
         //-------------Auto code goes here --------------------------------
         //If statements
-
+        if(/*Straight*/true){
             //move it forward 70cm and push game obej
             Drive(78, 78, 78, 78);
             stopRobot();
@@ -136,7 +124,6 @@ public class Red1Auto extends LinearOpMode {
             //turn left here to face sliders towards board
             Drive(-62, -62, 62, 62);
             stopRobot();
-
             //raise sliders
             Sliders.setTargetPosition(3000);
             Sliders.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -149,13 +136,12 @@ public class Red1Auto extends LinearOpMode {
 
 
             //approach the board
-            Drive(-90, -90, -90, -90);
+            Drive(-200, -200, -200, -0);
             stopRobot();
 
             //align with board
             Drive(13, -13,-13, 13);
             stopRobot();
-            //////////////-----------end if statement
 
             //drop the pixel
             Wrist.setPosition(0.50);
@@ -171,6 +157,7 @@ public class Red1Auto extends LinearOpMode {
 
             //reset wrist
             Wrist.setPosition(0.79);
+
 
             //move to parking
             Drive(-75, 75, 75, -75);
@@ -215,6 +202,13 @@ public class Red1Auto extends LinearOpMode {
             //spin 180 to face board
             Drive(-124, -124, 124, 124);
             stopRobot();
+            //move to middle bar
+            Drive(28, -28,-28, 28);
+            stopRobot();
+
+            //move to board 40 trhough the middle bar
+            Drive(-80, -80, -80, -80);
+            stopRobot();
 
             //raise sliders
             Sliders.setTargetPosition(3000);
@@ -227,15 +221,8 @@ public class Red1Auto extends LinearOpMode {
             //lift wrist
             Wrist.setPosition(0.50);
 
-            //Strafe right to avoid pixel
-            Drive(-25, 25, 25, -25);
-            stopRobot();
-
-            //move to board 40
-            Drive(-40, -40, -40, -40);
-            stopRobot();
             //Strafe strafe back left to align with board
-            Drive(10, -10, -10, 10);
+            Drive(-38, 38, 38, -38);
             stopRobot();
             //Get to board
             Drive(-50, -50, -50, -50);
@@ -299,7 +286,11 @@ public class Red1Auto extends LinearOpMode {
             Sliders.setPower(0);
 
             //approach the board
-            Drive(-90, -90, -90, -90);
+            Drive(-200, -200, -200, -20
+
+
+
+            );
             stopRobot();
 
             //align with board
@@ -387,67 +378,6 @@ public class Red1Auto extends LinearOpMode {
             telemetry.addData("motor power", motorFL.getPower());
             //telemetry.addData("Wrist Position", Wrist.getController().getServoPosition(5));
             telemetry.update();
-        }
-    }
-    public void DriveNSlides(int TargetPositionMotorFL, int TargetPositionMotorBL, int TargetPositionMotorFR, int TargetPositionMotorBR, int TargetPositionMotorSlides) {
-
-        DcMotor Sliders = hardwareMap.get(DcMotor.class, "Sliders"); // Control hub 0
-        Sliders.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Sliders.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Sliders.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Sliders.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        TargetPositionMotorFL = (int) (16.67 * TargetPositionMotorFL);
-        TargetPositionMotorBL = (int) (16.67 * TargetPositionMotorBL);
-        TargetPositionMotorFR = (int) (16.67 * TargetPositionMotorFR);
-        TargetPositionMotorBR = (int) (16.67 * TargetPositionMotorBR);
-
-        // this is in terms of cm
-        motorFL.setTargetPosition(TargetPositionMotorFL);
-        motorBL.setTargetPosition(TargetPositionMotorBL);
-        motorFR.setTargetPosition(TargetPositionMotorFR);
-        motorBR.setTargetPosition(TargetPositionMotorBR);
-        motorFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        boolean driveTarget = true;
-        boolean  slides = true;
-        while(driveTarget || slides){
-            if(Math.abs(motorFL.getCurrentPosition()-TargetPositionMotorFL)>1 && driveTarget) {
-                if (Math.abs(TargetPositionMotorFL - motorFL.getCurrentPosition()) > 300) {
-                    motorBL.setPower(0.6);
-                    motorFL.setPower(0.6);
-                    motorBR.setPower(0.6);
-                    motorFR.setPower(0.6);
-                } else {
-                    motorBL.setPower(0.2);
-                    motorFL.setPower(0.2);
-                    motorBR.setPower(0.2);
-                    motorFR.setPower(0.2);
-                }
-
-                telemetry.addData("motorFL Encoder Position: ", motorFL.getCurrentPosition());
-                telemetry.addData("motorBL Encoder Position: ", motorBL.getCurrentPosition());
-                telemetry.addData("motorFR Encoder Position: ", motorFR.getCurrentPosition());
-                telemetry.addData("motorBR Encoder Position: ", motorBR.getCurrentPosition());
-                telemetry.addData("motor power", motorFL.getPower());
-                //telemetry.addData("Wrist Position", Wrist.getController().getServoPosition(5));
-                telemetry.update();
-            }else{
-                driveTarget = false;
-            }
-            if(Sliders.getCurrentPosition()<2999) {
-                Sliders.setTargetPosition(3000);
-                Sliders.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                Sliders.setPower(0.5);
-                Sliders.setPower(0);
-            }
-            else{
-                Sliders.setPower(0);
-                slides = false;
-            }
         }
     }
 
